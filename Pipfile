@@ -11,6 +11,10 @@ name = "pypi"
 
 [packages]
 
+fake-useragent = "*"
+requests = "*"
+"bs4" = "*"
+pymysql = "*"
 
 
 [requires]

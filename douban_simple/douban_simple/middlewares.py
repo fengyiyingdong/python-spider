@@ -6,7 +6,71 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from fake_useragent import UserAgent
+import random, time
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from douban_simple.proxies import Proxies
 
+
+class RandomUserAgentMiddleware(object):
+
+    def __init__(self, crawler):
+        super(RandomUserAgentMiddleware, self).__init__()
+        self.ua = UserAgent()
+        self.ua_type = crawler.settings.get('RANDOM_UA_TYPE', 'random')
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    def process_request(self, request, spider):
+
+        def get_ua():
+            return getattr(self.ua, self.ua_type)
+        request.headers.setdefault('User-Agent', get_ua())
+
+class RandomProxyMiddleware(HttpProxyMiddleware):
+    """docstring for RandomProxyMiddleware"""
+
+    def __init__(self, arg):
+        proxy = Proxies(10, 'https://movie.douban.com')
+        proxy.verify_proxies()
+        self.proxies = proxy.proxies
+        with open('proxies.txt', 'a') as f:
+            for p in self.proxie:
+                f.write(p + '\n')
+
+    def process_request(self, request, spider):
+        '''对request对象加上proxy'''
+        proxy = self.get_random_proxy()
+        print("proxy ip:%s" % proxy)
+        request.meta['proxy'] = proxy
+
+    def process_response(self, request, response, spider):
+        '''对返回的response处理'''
+
+        # 如果返回的response状态不是200，重新生成当前request对象
+        if response.status != 200:
+            proxy = self.get_random_proxy()
+            print("replace proxy ip%s" % proxy)
+            # 对当前reque加上代理
+            request.meta['proxy'] = proxy
+            return request
+        return response
+
+    def get_random_proxy(self):
+        # proxy = random.choice(self.proxies).strip()
+        # return proxy
+        '''随机从文件中读取proxy'''
+        while 1:  
+            with open('proxies.txt', 'r') as f:
+                proxies = f.readlines()
+            if proxies:
+                break
+            else:
+                time.sleep(1)
+        proxy = random.choice(proxies).strip()
+        return proxy
 
 class DoubanSimpleSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
