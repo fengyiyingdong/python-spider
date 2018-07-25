@@ -7,6 +7,7 @@ from scrapy import Selector
 from douban_simple.items import Movie, Review, People
 
 
+PeopleIdPattern = re.compile(r'^http[s]*://www\.douban\.com/people/(.+)/.*$')
 NumPattern = re.compile(r'([0-9]+)')
 
 def getNum(str):
@@ -17,7 +18,6 @@ def getNum(str):
         return r.group(1)
     return None
 
-PeopleIdPattern = re.compile(r'^http[s]*://www.douban.com/people/(.+)/.*$')
 def getPeopleId(str):
     if not str:
         return None

@@ -120,6 +120,14 @@ class DoubanImagePipeline(ImagesPipeline):
         super().__init__(store_uri, download_func, settings)
         self.store_uri = store_uri
 
+    def file_path(self, request, response=None, info=None):
+        if not isinstance(request, scrapy.Request):
+            url = request
+        else:
+            url = request.url
+        index = url.index("//")
+        return url[index + 2:]
+
     def get_media_requests(self, item, info):
         if isinstance(item, Movie):
             yield scrapy.Request(item['sposterUrl'])
@@ -137,9 +145,10 @@ class DoubanImagePipeline(ImagesPipeline):
         elif isinstance(item, Movie):
             item['sposterPath'] = image_paths[0]
         elif isinstance(item, Review):
-            url_paths = [x for ok, x in results if ok]
-            for url_path in url_paths:
-                srcfile = self.store_uri + "/" + url_path['path']
-                dstfile = self.store_uri + url_path['url'].split(":")[1][1:]
-                movefile(srcfile, dstfile)
+            # url_paths = [x for ok, x in results if ok]
+            # for url_path in url_paths:
+            #     srcfile = self.store_uri + "/" + url_path['path']
+            #     dstfile = self.store_uri + url_path['url'].split(":")[1][1:]
+            #     movefile(srcfile, dstfile)
+            pass
         return item
