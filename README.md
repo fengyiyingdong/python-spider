@@ -1,2 +1,2 @@
 # python-spider
-simple spider of douban movie
+study scrapy. simple spider of douban movie

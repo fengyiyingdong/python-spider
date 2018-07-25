@@ -34,11 +34,11 @@ class Movie(Item):
     sposterPath = Field()
 
 class Review(Item):
+    id = Field()
     subject = Field()
     title = Field()
+    rating = Field()
     createAt = Field()
-    updatedAt = Field()
-    summary = Field()
     content = Field()
     authorName = Field()
     authorId = Field() #people id
@@ -47,6 +47,7 @@ class Review(Item):
     donateNum = Field() #打赏数量
     recNum = Field() #转发数量
     commentsCount = Field() #评论数
+    images = Field()
     
 
 class People(Item):
@@ -55,10 +56,11 @@ class People(Item):
     signature = Field()
     address = Field()
     registerTime = Field()
-    intro = Field
+    intro = Field()
     groups = Field()
     doulists = Field()
-    revNum = Field()
+    friendNum = Field()
+    revNum = Field() #被关注的人数
     avatarUrl = Field()
     avatarPath = Field()
 
