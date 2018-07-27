@@ -24,6 +24,9 @@ MYSQL_PASSWORD='123456'
 RETRY_ENABLED = True
 RETRY_TIMES = 5
 
+#
+DEPTH_PRIORITY = 1
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'douban_simple (+http://www.yourdomain.com)'
 
@@ -31,12 +34,12 @@ RETRY_TIMES = 5
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 1
+CONCURRENT_REQUESTS = 5
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -49,10 +52,15 @@ TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'en',
-    'Referer': 'https://movie.douban.com/chart'
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Accept-Language':'zh-CN,zh;q=0.9',
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+    'Referer': 'www.douban.com',
+    'Upgrade-Insecure-Requests':' 1',
+    'User-Agent' : 'Baiduspider',
+#    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
 }
 
 # Enable or disable spider middlewares
@@ -66,9 +74,9 @@ DEFAULT_REQUEST_HEADERS = {
 DOWNLOADER_MIDDLEWARES = {
 #    'douban_simple.middlewares.DoubanSimpleDownloaderMiddleware': 543,
 #    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
-#    'douban_simple.middlewares.RandomProxyMiddleware': 100,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'douban_simple.middlewares.RandomUserAgentMiddleware': 400,
+    'douban_simple.middlewares.RandomProxyMiddleware': 100,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 400,
+#    'douban_simple.middlewares.RandomUserAgentMiddleware': 400,
 }
 #UserAgent生成方式
 RANDOM_UA_TYPE= 'random'
