@@ -33,13 +33,12 @@ class RandomProxyMiddleware(HttpProxyMiddleware):
     """docstring for RandomProxyMiddleware"""
 
     def __init__(self, arg):
-        pass
-        # proxy = Proxies(10, 'https://movie.douban.com')
-        # proxy.verify_proxies()
-        # self.proxies = proxy.proxies
-        # with open('proxies.txt', 'a') as f:
-        #     for p in self.proxies:
-        #         f.write(p + '\n')
+        proxy = Proxies(10, 'https://movie.douban.com')
+        proxy.verify_proxies()
+        self.proxies = proxy.proxies
+        with open('proxies.txt', 'a') as f:
+            for p in self.proxies:
+                f.write(p + '\n')
 
     def process_request(self, request, spider):
         '''对request对象加上proxy'''
@@ -70,7 +69,7 @@ class RandomProxyMiddleware(HttpProxyMiddleware):
                 break
             else:
                 time.sleep(1)
-        proxy = random.choice(list(set(proxies))).strip()
+        proxy = random.choice(proxies).strip()
         return proxy
 
 class DoubanSimpleSpiderMiddleware(object):

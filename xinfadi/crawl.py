@@ -27,7 +27,6 @@ async def fetch(url):
 
 async def request():
     url = "http://www.xinfadi.com.cn/marketanalysis/{}/list/{}.shtml"
-    tasks = []
     for i in range(1, 2):
         response = await fetch(url.format(i, 1))
         pageNum = getLastPageNum(response)
@@ -36,9 +35,7 @@ async def request():
             break
         logging.info("request from 1 to %s for %s" % (pageNum, i))
         for j in range(1, pageNum + 1):
-            task = asyncio.ensure_future(fetch(url.format(i, j)))
-            tasks.append(task)
-            responses = await asyncio.gather(*tasks)
+            responses = await fetch(url.format(i, j))
             await parse(responses)
 
 PageNumPattern = re.compile(r'.+/(\d+).shtml$')

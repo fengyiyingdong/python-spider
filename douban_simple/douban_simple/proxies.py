@@ -13,7 +13,7 @@ class Proxies(object):
 
     """docstring for Proxies"""
 
-    def __init__(self, page=10, url='https://www.baidu.com'):
+    def __init__(self, page=1, url='https://www.baidu.com'):
         self.proxies = set()
         self.verify_pro = []
         self.page = page
@@ -31,8 +31,8 @@ class Proxies(object):
             "http://www.data5u.com/free/gwgn/index.shtml",
             ]
         mimiip = [
-            # "http://www.mimiip.com/gngao",
-            # "http://www.mimiip.com/hw",
+            "http://www.mimiip.com/gngao",
+            "http://www.mimiip.com/hw",
         ]
         for url in data5u:
             self.get_proxies_data5u(url)
@@ -149,7 +149,7 @@ class Proxies(object):
         new_queue = Queue()
         print('verify proxy........')
         works = []
-        for _ in range(15):
+        for _ in range(50):
             works.append(Process(target=self.verify_one_proxy,
                                  args=(old_queue, new_queue)))
         for work in works:
@@ -160,10 +160,10 @@ class Proxies(object):
             old_queue.put(0)
         for work in works:
             work.join()
-        self.proxies = []
+        self.proxies = set()
         while 1:
             try:
-                self.proxies.add(new_queue.get(timeout=1))
+                self.proxies.add(new_queue.get(timeout=2))
             except:
                 break
         print('verify_proxies done!')
